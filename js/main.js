@@ -1,35 +1,3 @@
-const randomInteger = (min, max) => {
-  if (min >= 0 && min < max) {
-    return Math.round(min + Math.random() * (max - min) + min);
-  }
-  if (min < 0 || max < 0) {
-    return "Переданные числа не соответствуют условиям";
-  }
-  if (min >= max) {
-    return min;
-  }
-};
-
-randomInteger(0, 3);
-
-const checkStringLength = (string, maxLength) => string.length <= maxLength;
-
-checkStringLength("Переданные числа не соответствуют условиям", 50);
-
-const ID = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25,
-];
-
-const PHOTOS = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25,
-];
-
-const LIKE = [];
-
-const COMMENT = [];
-
 const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -37,19 +5,102 @@ const getRandomPositiveInteger = (a, b) => {
   return Math.floor(result);
 };
 
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomPositiveInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+
+const OBJECT_COUNT = 25;
+
+const AvatarsCount = {
+  min: 1,
+  max: 6,
 };
 
-const createObject = () => {
+const MessageCount = {
+  min: 1,
+  max: 2,
+};
+
+const LikesCount = {
+  min: 15,
+  max: 200,
+};
+
+const CommentsCount = {
+  min: 1,
+  max: 5,
+};
+
+const NAMES = [
+  'Иван',
+  'Петр',
+  'Катя',
+  'Игорь',
+  'Николай',
+  'Тимофей',
+  'Кристина',
+  'Игнатий',
+  'Виктор',
+  'Михаил',
+];
+
+const DESCRIPTIONS = [
+  'Томная (зачеркнуто) темная гавань',
+  'Продам гараж. Дорого',
+  'Никода такого не было и вот опять',
+  'Бриз морской, а коктейль алкогольный',
+  'В гостях хорошо, а дома теплые тапочки',
+  'На дискотеке пятидесятых',
+  'Сказочный закат',
+  'Соскучились?',
+  'Снова в дороге',
+  'Это я на море была, сейчас уже дома',
+];
+
+const MESSAGES = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+];
+
+let commentId = 0;
+let photoId = 0;
+
+const createCommentMessage = () => {
+  const messageCount = getRandomPositiveInteger(MessageCount.min, MessageCount.max);
+  const message = [];
+
+  for (let i = 1; i <= messageCount; i++) {
+    message.push(getRandomArrayElement(MESSAGES));
+  }
+
+  return [... new Set(message)].join(' ');
+};
+
+const createCommentObject = () => {
+  commentId++;
+
   return {
-    id: getRandomArrayElement(ID),
-    avatar: getRandomArrayElement(PHOTOS),
-    likes: getRandomArrayElement(LIKE),
-    comments: getRandomArrayElement(COMMENT),
+    id: commentId,
+    avatar: `img/avatar-${getRandomPositiveInteger(AvatarsCount.min, AvatarsCount.max)}.svg`,
+    messages: createCommentMessage(),
+    name: getRandomArrayElement(NAMES),
   };
 };
 
-const similarObject = Array.from({ length: 25 }, createObject);
+const createPhotoObject = () => {
+  photoId++;
 
-console.log(similarObject);
+  return {
+    id: photoId,
+    url: `photos/${photoId}.jpg`,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    likes: getRandomPositiveInteger(LikesCount.min, LikesCount.max),
+    comments: Array.from({ length: getRandomPositiveInteger(CommentsCount.min, CommentsCount.max) }, createCommentObject),
+  };
+};
+
+const createSimilarPhotos = () => Array.from({length: OBJECT_COUNT}, createPhotoObject);
+
+createSimilarPhotos();
