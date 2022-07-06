@@ -1,4 +1,5 @@
 import {createSimilarPhotos} from './data.js';
+import {showBigPicture} from './show-big-picture.js';
 
 const similarListElement = document.querySelector('.pictures');
 const similarListTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -13,6 +14,11 @@ const drawThumbnails = () =>{
     userElement.querySelector('.picture__likes').textContent = photo.likes;
     userElement.querySelector('.picture__comments').textContent = photo.comments.length;
     similarUserFragment.append(userElement);
+
+    userElement.addEventListener('click', () => {
+      showBigPicture(photo);
+    });
+
   });
 
   similarListElement.append(similarUserFragment);
