@@ -1,3 +1,5 @@
+import { isEscapeKey} from './util.js';
+
 const closeButton = document.querySelector('.big-picture__cancel');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = document.querySelector('.big-picture__img img');
@@ -13,7 +15,7 @@ const closeModal = () => {
 };
 
 const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt) && !evt.target.closest('.social__footer-text')) {
     evt.preventDefault();
     closeModal();
   }
