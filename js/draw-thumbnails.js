@@ -1,14 +1,21 @@
-import {createSimilarPhotos} from './data.js';
 import {showBigPicture} from './show-big-picture.js';
 
 const similarListElement = document.querySelector('.pictures');
 const similarListTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const imgFilter = document.querySelector('.img-filters');
 
-const similarUserPhotos = createSimilarPhotos();
 const similarUserFragment = document.createDocumentFragment();
 
-const drawThumbnails = () =>{
-  similarUserPhotos.forEach((photo)=> {
+const clearPicturesList = () => {
+  const pictures = document.querySelectorAll('.picture');
+  pictures.forEach((element) => element.remove());
+};
+
+const drawThumbnails = (photos) => {
+  if (imgFilter.classList.contains('img-filters--inactive')) {
+    imgFilter.classList.remove('img-filters--inactive');
+  }
+  photos.forEach((photo) => {
     const userElement = similarListTemplate.cloneNode(true);
     userElement.querySelector('.picture__img').src = photo.url;
     userElement.querySelector('.picture__likes').textContent = photo.likes;
@@ -18,9 +25,8 @@ const drawThumbnails = () =>{
     userElement.addEventListener('click', () => {
       showBigPicture(photo);
     });
-
   });
-
+  clearPicturesList();
   similarListElement.append(similarUserFragment);
 };
 

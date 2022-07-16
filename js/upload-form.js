@@ -1,7 +1,9 @@
-import { isEscapeKey } from './util.js';
-import { isUploadFormValid } from './form-validate.js';
-import { onControlSmallerClick, onControlBiggerClick, resetScale } from './scale-image.js';
-import { changeEffect } from './photo-effect.js';
+import {isEscapeKey} from './util.js';
+import {isUploadFormValid} from './form-validate.js';
+import {onControlSmallerClick, onControlBiggerClick, resetScale} from './scale-image.js';
+import {changeEffect} from './photo-effect.js';
+import {createErrorPopup, createSuccessPopup} from './popup.js';
+import {sendData} from './api.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
@@ -10,10 +12,9 @@ const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancel = document.querySelector('#upload-cancel');
 const uploadSelectImage = document.querySelector('#upload-select-image');
 const form = document.querySelector('#upload-select-image');
-
+const buttonUploadElement = document.querySelector('.img-upload__submit');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
-
 const imagePreview = document.querySelector('.img-upload__preview img');
 const effectsListElement = document.querySelector('.effects__list');
 const effectLevelFieldset = document.querySelector('.effect-level');
@@ -27,7 +28,7 @@ const closeModal = () => {
   imagePreview.style.filter = null;
   removeEventListener();
   if (document.querySelector('.pristine-error')) {
-    document.querySelector('.pristine-error').innerHTML='';
+    document.querySelector('.pristine-error').innerHTML = '';
   }
 };
 
@@ -50,7 +51,7 @@ const onUploadCancelClick = (evt) => {
   closeModal();
 };
 
-const onSliderChange = (evt) =>{
+const onSliderChange = (evt) => {
   evt.preventDefault();
   changeEffect(evt.target.value);
 };
@@ -64,8 +65,8 @@ function removeEventListener() {
 }
 
 function addEventListener() {
-  document.addEventListener('keydown',onDocumentKeydown);
-  uploadCancel.addEventListener('click',  onUploadCancelClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  uploadCancel.addEventListener('click', onUploadCancelClick);
   scaleControlSmaller.addEventListener('click', onControlSmallerClick);
   scaleControlBigger.addEventListener('click', onControlBiggerClick);
   effectsListElement.addEventListener('change', onSliderChange);
@@ -82,9 +83,23 @@ const onInputUploadFormChange = (evt) => {
   }
 };
 
+const onSuccess = () => {
+  buttonUploadElement.disabled = false;
+  closeModal();
+  createSuccessPopup();
+};
+
+const onError = () => {
+  buttonUploadElement.disabled = false;
+  createErrorPopup();
+};
+
 const onFormSubmit = (evt) => {
-  if (!isUploadFormValid()) {
-    evt.preventDefault();
+  evt.preventDefault();
+  if (isUploadFormValid()) {
+    buttonUploadElement.disabled = true;
+    const formData = new FormData(evt.target);
+    sendData(formData, onSuccess, onError);
   }
 };
 

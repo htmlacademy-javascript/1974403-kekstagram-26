@@ -1,4 +1,4 @@
-import { isEscapeKey} from './util.js';
+import {isEscapeKey} from './util.js';
 
 const PART_OF_COMMENTS = 5;
 
@@ -39,7 +39,7 @@ const renderComments = (array) => {
     const commentImg = comment.querySelector('.social__picture');
     commentImg.src = item.avatar;
     commentImg.alt = item.name;
-    comment.querySelector('.social__text').textContent = item.messages;
+    comment.querySelector('.social__text').textContent = item.message;
     commentsList.append(comment);
   });
 };
