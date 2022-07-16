@@ -8,7 +8,7 @@ let scale = 1;
 const scaleControlValue = document.querySelector('.scale__control--value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-const onControlSmallerClick = (evt)  =>{
+const onControlSmallerClick = (evt) => {
   evt.preventDefault();
   if (percent <= PERCENT_STEP) {
     return;
@@ -19,7 +19,7 @@ const onControlSmallerClick = (evt)  =>{
   scale = scale - SCALE_STEP;
 };
 
-const onControlBiggerClick = (evt)  =>{
+const onControlBiggerClick = (evt) => {
   evt.preventDefault();
   if (percent >= BASE_PERCENT) {
     return;
@@ -37,4 +37,4 @@ const resetScale = () => {
   scale = BASE_SCALE;
 };
 
-export { onControlSmallerClick, onControlBiggerClick, resetScale };
+export {onControlSmallerClick, onControlBiggerClick, resetScale};

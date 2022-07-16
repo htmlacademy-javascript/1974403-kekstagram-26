@@ -27,16 +27,16 @@ const RANGE_OPTIONS = {
 };
 
 const FILTER_NAME = {
-  'chrome': 'grayscale',
-  'sepia': 'sepia',
-  'marvin': 'invert',
-  'phobos': 'blur',
-  'heat': 'brightness',
+  chrome: 'grayscale',
+  sepia: 'sepia',
+  marvin: 'invert',
+  phobos: 'blur',
+  heat: 'brightness',
 };
 
 const UNIT = {
-  'invert': '%',
-  'blur': 'px',
+  invert: '%',
+  blur: 'px',
 };
 
 const effectLevelFieldset = document.querySelector('.effect-level');
@@ -70,7 +70,7 @@ const changeEffect = (effectValue) => {
   effectLevelFieldset.classList.remove('hidden');
 
   const effect = FILTER_NAME[effectValue];
-  const { min, max, step } = RANGE_OPTIONS[effect];
+  const {min, max, step} = RANGE_OPTIONS[effect];
   const unit = UNIT[effect] ? UNIT[effect] : '';
 
   imagePreview.className = '';
@@ -91,4 +91,4 @@ const changeEffect = (effectValue) => {
   });
 };
 
-export { changeEffect };
+export {changeEffect};
